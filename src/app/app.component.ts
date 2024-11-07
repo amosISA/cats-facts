@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { CatFactsComponent } from './cats-facts.component';
 
 @Component({
   selector: 'app-root',
+  template: `<app-cat-facts />`,
   standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  imports: [CatFactsComponent],
 })
-export class AppComponent {
-  title = 'app';
-}
+export class AppComponent {}
