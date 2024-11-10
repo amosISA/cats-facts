@@ -1,29 +1,23 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { catchError, map, Observable } from 'rxjs';
-
-export interface CatFactResponse {
-  data: string[];
-}
+import { Injectable, resource, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class CatsFactsService {
   private readonly _apiUrl = 'https://meowfacts.herokuapp.com';
-  private readonly _http = inject(HttpClient);
+  private readonly count = signal(10);
 
-  getCatsFacts(count = 10): Observable<string[]> {
-    return this._http
-      .get<CatFactResponse>(`${this._apiUrl}`, {
-        params: { count: count.toString() },
-      })
-      .pipe(
-        map((response) => response.data),
-        catchError(this.handleError)
-      );
-  }
+  readonly getCatsFacts = resource({
+    request: this.count,
+    loader: async ({ request: count, abortSignal }) => {
+      try {
+        const response = await (await fetch(`${this._apiUrl}/?count=${count}`, { signal: abortSignal })).json() as { data: string[] };
+        return response.data;
+      } catch(error) {
+        throw error;
+      }
+    }
+  });
 
-  private handleError(error: any): Observable<never> {
-    console.error('An error occurred:', error);
-    throw error;
+  updateCount(value: number): void {
+    this.count.set(value);
   }
 }
