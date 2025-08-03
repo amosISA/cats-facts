@@ -14,7 +14,8 @@ export class CatsFactsService {
       } catch(error) {
         throw error;
       }
-    }
+    },
+    defaultValue: [],
   });
 
   updateCount(value: number): void {
