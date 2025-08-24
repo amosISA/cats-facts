@@ -15,16 +15,15 @@ export class CatsFactsRxResourceService {
   private readonly count = signal(10);
 
   readonly getCatsFacts = rxResource({
-    request: this.count,
-    loader: (count) => {
+    stream: () => {
       return this._http
-      .get<CatFactResponse>(`${this._apiUrl}`, {
-        params: { count: count.toString() },
-      })
-      .pipe(
-        map((response) => response.data),
-        catchError(this.handleError)
-      );
+        .get<CatFactResponse>(`${this._apiUrl}`, {
+          params: { count: this.count().toString() },
+        })
+        .pipe(
+          map((response) => response.data),
+          catchError(this.handleError)
+        );
     }
   });
 

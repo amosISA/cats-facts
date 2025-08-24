@@ -1,4 +1,4 @@
-import { Injectable, resource, signal } from '@angular/core';
+import { Injectable, resource, ResourceLoaderParams, signal } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class CatsFactsService {
@@ -6,10 +6,10 @@ export class CatsFactsService {
   private readonly count = signal(10);
 
   readonly getCatsFacts = resource({
-    request: this.count,
-    loader: async ({ request: count, abortSignal }) => {
+    params: this.count,
+    loader: async (loaderParams: ResourceLoaderParams<number>) => {
       try {
-        const response = await (await fetch(`${this._apiUrl}/?count=${count}`, { signal: abortSignal })).json() as { data: string[] };
+        const response = await (await fetch(`${this._apiUrl}/?count=${loaderParams.params}`, { signal: loaderParams.abortSignal })).json() as { data: string[] };
         return response.data;
       } catch(error) {
         throw error;

@@ -8,17 +8,17 @@ export class ResourceStatusPipe implements PipeTransform {
   transform(status: ResourceStatus): string {
     console.log(status);
     switch (status) {
-      case ResourceStatus.Idle:
+      case 'idle':
         return 'Idle';
-      case ResourceStatus.Error:
+      case 'error':
         return 'Error';
-      case ResourceStatus.Loading:
+      case 'loading':
         return 'Loading';
-      case ResourceStatus.Resolved:
+      case 'resolved':
         return 'Resolved';
-      case ResourceStatus.Reloading:
+      case 'reloading':
         return 'Reloading';
-      case ResourceStatus.Local:
+      case 'local':
         return 'Local';
       default:
         return 'Unknown';
